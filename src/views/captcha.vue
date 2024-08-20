@@ -10,8 +10,8 @@ const config: CaptchaConfig = reactive({
   // 省略必须的配置参数
   gt: <string>gt,
   challenge: <string>challenge,
-  new_captcha: !new_captcha,
-  offline: !success,
+  new_captcha: !!new_captcha,
+  offline: !!success,
   product: 'bind',
   lang: 'zh-cn'
 })
