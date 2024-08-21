@@ -6,8 +6,9 @@ import axios from "axios";
 const {config} = defineProps<CaptchaProps>();
 
 const callback: CaptchaHandle = (captchaObj: any) => {
+  // 极验V3实现
   captchaObj.onReady(() => {
-    captchaObj.showCaptcha();
+    captchaObj.verify();
   }).onSuccess(() => {
     const validate = captchaObj.getValidate();
     if (!validate) alert("请先完成验证");
@@ -16,10 +17,10 @@ const callback: CaptchaHandle = (captchaObj: any) => {
     axios.post(api, validate)
         .then(resp => {
           if (resp.data.code === 0) {
-            alert("验证码已提交")
-            return
+            document.body.append("<h1>验证码已提交，可关闭本页面返回原服务了。</h1>>")
+            return;
           }
-          alert(`服务器错误: ${resp.data.message}`)
+          return Promise.reject(`服务器错误: ${resp.data.message}`);
         })
         .catch(reason => {
           if (axios.isAxiosError(reason)) {
@@ -29,17 +30,17 @@ const callback: CaptchaHandle = (captchaObj: any) => {
           console.error(reason);
         })
 
-    captchaObj.reset();
+    captchaObj.destroy();
   }).onError(() => {
     console.error("初始化失败");
-  })
+  });
 }
 
-window.initGeetest4(config, callback);
+window.initGeetest(config, callback);
 
 
 </script>
 
 <template>
-  <div id="captchaBox"></div>
+  <div id="captcha-box"></div>
 </template>

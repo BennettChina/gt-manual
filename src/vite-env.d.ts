@@ -17,6 +17,7 @@ interface ImportMeta {
 declare global {
     interface Window {
         initGeetest4: (config, callback) => void;
+        initGeetest: (config, callback) => void;
         captchaObj: any
     }
 }
