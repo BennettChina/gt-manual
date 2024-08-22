@@ -11,3 +11,21 @@
 ## 后端服务
 
 [awesome-api](https://github.com/BennettChina/awesome-api)
+
+## 部署
+
+### 使用 Vercel 部署
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBennettChina%2Fgt-manual&env=VITE_CAPTCHA_API&project-name=gt-manual&repository-name=gt-manual)
+
+### 自行编译部署
+
+```bash
+npm install && npm run build
+```
+
+### 开发环境
+
+```bash
+npm install && npm run dev
+```
