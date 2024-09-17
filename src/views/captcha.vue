@@ -11,7 +11,7 @@ const config: CaptchaConfig = reactive({
   gt: <string>gt,
   challenge: <string>challenge,
   new_captcha: new_captcha === undefined ? true : !!new_captcha,
-  offline: success === undefined ? false : !!success,
+  offline: success === undefined ? false : !success,
   product: 'bind',
   lang: 'zh-cn'
 })
