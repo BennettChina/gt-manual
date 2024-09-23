@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 
-import type {CaptchaHandle, CaptchaProps} from "@/types/captcha.ts";
+import type {CaptchaHandle, CaptchaProps, GtError} from "@/types/captcha.ts";
 import axios from "axios";
 import {ref} from "vue";
+import {transfer} from "@/utils/transfer.ts";
 
 const {config} = defineProps<CaptchaProps>();
 
 const show = ref(false);
+const errMsg = ref("");
 
 const callback: CaptchaHandle = (captchaObj: any) => {
   // 极验V3实现
@@ -34,7 +36,8 @@ const callback: CaptchaHandle = (captchaObj: any) => {
         })
 
     captchaObj.destroy();
-  }).onError(() => {
+  }).onError((e: GtError) => {
+    errMsg.value = transfer(e) || e.msg;
     console.error("初始化失败");
   });
 }
@@ -46,4 +49,5 @@ window.initGeetest(config, callback);
 
 <template>
   <h1 v-if="show">验证码已提交，可关闭本页面返回原服务了。</h1>
+  <h2>{{ errMsg }}</h2>
 </template>

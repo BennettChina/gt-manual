@@ -45,3 +45,16 @@ export interface Gt3Config {
 export type CaptchaProps = {
     config: CaptchaConfig;
 }
+
+/**
+ * @property code 错误码
+ * @property msg 错误信息
+ * @property error_code 与 code 一致
+ * @property user_error 未提供有效信息
+ */
+export type GtError = {
+    code: string;
+    msg: string;
+    error_code: string;
+    user_error: string;
+}
