@@ -1,6 +1,6 @@
 import {GtError} from "@/types/captcha.ts";
 
-const CODE_MAP = {
+const CODE_MAP: Record<string, string> = {
     // server error
     'error_00': '运行异常',
     'error_01': '刷新次数过多',
@@ -37,9 +37,19 @@ const CODE_MAP = {
     'error_115': '语音文件加载失败：1.请保持网络畅通；2.请联系极验官网客服',
     'error_116': '用户回调函数执行异常,请检查api方法中的回调函数',
     'error_117': '未定义的错误类型',
+    '60000': '用户配置错误',
+    '60001': '配置参数captcha_id有误：请检查初始化时传入的配置参数captcha_id（对应申请时的ID）',
+    '60002': '传给 appendTo 接口的参数有误，只接受 id 选择器和 DOM 元素',
+    '60100': '/load请求报错：1.请保持网络畅通；2.检查初始化时传入的配置参数captchaId',
+    '60101': '/verify请求报错：1.请保持网络畅通；2.请联系极验官网客服',
+    '60200': '皮肤加载失败：1.请保持网络畅通；2.请联系极验官网客服',
+    '60201': '语言包加载失败：1.请保持网络畅通；2.请联系极验官网客服',
+    '60202': '验证图片加载失败：1.请保持网络畅通；2.请联系极验官网客服',
+    '60204': '（gacptcha4）js资源加载超时：1.请保持网络畅通；2.请联系极验官网客服',
+    '60205': '(gct4)js资源加载超时：1.请保持网络畅通；2.请联系极验官网客服',
+    '60500': '服务端forbidden： 请联系极验官网客服',
 }
 
 export function transfer(error: GtError): string | undefined {
-    return CODE_MAP[error.code];
+    return CODE_MAP[String(error.code)];
 }
-

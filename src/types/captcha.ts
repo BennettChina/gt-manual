@@ -55,6 +55,9 @@ export type CaptchaProps = {
 export type GtError = {
     code: string;
     msg: string;
-    error_code: string;
-    user_error: string;
+    error_code?: string;
+    user_error?: string;
+    desc?: {
+        detail?: string;
+    };
 }

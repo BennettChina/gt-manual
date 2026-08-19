@@ -1,25 +1,57 @@
 <script lang="ts" setup>
-import type {CaptchaConfig} from "@/types/captcha.ts";
+import type {CaptchaConfig, Gt3Config, Gt4Config} from "@/types/captcha.ts";
 import {reactive} from "vue";
 import GtCaptcha from "@/components/gt-captcha.vue";
 import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute();
 const router = useRouter();
-const {gt, challenge, new_captcha, success} = route.query;
-// 没有 gt 和 challenge 就跳转到首页
-if (!gt || !challenge) {
-  router.push({path: "/"});
+
+type QueryValue = string | null | Array<string | null>;
+
+const getQueryValue = (value: QueryValue): string | undefined =>
+    Array.isArray(value) ? value[0] ?? undefined : value ?? undefined;
+
+const useV4 = getQueryValue(route.query.use_v4) === "true";
+
+let config: CaptchaConfig;
+
+if (useV4) {
+  const captchaId = getQueryValue(route.query.gt);
+  const product = getQueryValue(route.query.product) as Gt4Config["product"];
+  const language = getQueryValue(route.query.language) as Gt4Config["language"];
+  const riskType = getQueryValue(route.query.risk_type) ?? getQueryValue(route.query.riskType);
+
+  if (!captchaId) {
+    router.push({path: "/"});
+  }
+
+  config = reactive<Gt4Config>({
+    captchaId: <string>captchaId,
+    product: product === "float" || product === "popup" || product === "bind" ? product : "bind",
+    language: language || "zho",
+    riskType,
+    hideSuccess: getQueryValue(route.query.hideSuccess) === "true",
+  });
+} else {
+  const gt = getQueryValue(route.query.gt);
+  const challenge = getQueryValue(route.query.challenge);
+  const newCaptcha = getQueryValue(route.query.new_captcha);
+  const success = getQueryValue(route.query.success);
+
+  if (!gt || !challenge) {
+    router.push({path: "/"});
+  }
+
+  config = reactive<Gt3Config>({
+    gt: <string>gt,
+    challenge: <string>challenge,
+    new_captcha: newCaptcha === undefined ? true : !!newCaptcha,
+    offline: success === undefined ? false : !success,
+    product: "bind",
+    lang: "zh-cn",
+  });
 }
-const config: CaptchaConfig = reactive({
-  // 省略必须的配置参数
-  gt: <string>gt,
-  challenge: <string>challenge,
-  new_captcha: new_captcha === undefined ? true : !!new_captcha,
-  offline: success === undefined ? false : !success,
-  product: 'bind',
-  lang: 'zh-cn'
-})
 </script>
 
 <template>
