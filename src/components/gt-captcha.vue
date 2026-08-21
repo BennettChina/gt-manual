@@ -5,7 +5,7 @@ import axios from "axios";
 import {onMounted, ref} from "vue";
 import {transfer} from "@/utils/transfer.ts";
 
-const {config} = defineProps<CaptchaProps>();
+const {config, sessionId} = defineProps<CaptchaProps>();
 
 const show = ref(false);
 const errMsg = ref("");
@@ -18,9 +18,33 @@ let attachedV4Captcha = false;
 const isV4 = (value: CaptchaConfig): value is Gt4Config =>
     Object.prototype.hasOwnProperty.call(value, "captchaId");
 
-const submit = (validate: object) => {
+const getSessionId = (): string | undefined => {
+  if (!isV4(config)) {
+    return sessionId;
+  }
+
+  if (!config.userInfo) {
+    return undefined;
+  }
+
+  try {
+    const userInfo = JSON.parse(config.userInfo) as Record<string, unknown>;
+    return typeof userInfo.session_id === "string" ? userInfo.session_id : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const buildKey = (): string | undefined => {
+  const sessionId = getSessionId();
+  const gt = isV4(config) ? config.captchaId : config.gt;
+  return sessionId && gt ? `${sessionId}:${gt}` : undefined;
+}
+
+const submit = (validate: Record<string, unknown>) => {
     const api = import.meta.env.VITE_CAPTCHA_API
-    axios.post(api, validate)
+  const key = buildKey();
+  axios.post(api, key ? {...validate, key} : validate)
         .then(resp => {
           if (resp.data.code === 0) {
             show.value = true;

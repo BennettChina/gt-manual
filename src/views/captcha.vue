@@ -13,6 +13,7 @@ const getQueryValue = (value: QueryValue): string | undefined =>
     Array.isArray(value) ? value[0] ?? undefined : value ?? undefined;
 
 const useV4 = getQueryValue(route.query.use_v4) === "true";
+const sessionId = getQueryValue(route.query.session_id);
 
 let config: CaptchaConfig;
 
@@ -57,7 +58,7 @@ if (useV4) {
 </script>
 
 <template>
-  <gt-captcha :config="config"/>
+  <gt-captcha :config="config" :session-id="sessionId"/>
 </template>
 
 <style lang="scss" scoped>

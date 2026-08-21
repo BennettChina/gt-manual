@@ -44,6 +44,7 @@ export interface Gt3Config {
 
 export type CaptchaProps = {
     config: CaptchaConfig;
+    sessionId?: string;
 }
 
 /**
