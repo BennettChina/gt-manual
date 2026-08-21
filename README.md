@@ -13,7 +13,8 @@
 当前前端同时支持极验 V3 和 V4。
 
 - V3 使用 `https://static.geetest.com/static/js/gt.0.4.9.js`，初始化参数来自 `gt`、`challenge`。
-- V4 使用 `https://static.geetest.com/v4/gt4.js`，通过 `use_v4=true` 启用，初始化参数中的 `captchaId` 取自 `gt`。
+- V4 使用 `https://static.geetest.com/v4/gt4.js`，通过 `use_v4=true` 启用，初始化参数中的 `captchaId` 取自 `gt`，`userInfo`
+  取自同名查询参数。
 
 手动处理页路由为 `/manual/captcha`，后端按版本传入对应查询参数即可。
 

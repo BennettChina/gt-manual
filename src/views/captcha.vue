@@ -21,6 +21,7 @@ if (useV4) {
   const product = getQueryValue(route.query.product) as Gt4Config["product"];
   const language = getQueryValue(route.query.language) as Gt4Config["language"];
   const riskType = getQueryValue(route.query.risk_type) ?? getQueryValue(route.query.riskType);
+  const userInfo = getQueryValue(route.query.userInfo);
 
   if (!captchaId) {
     router.push({path: "/"});
@@ -31,6 +32,7 @@ if (useV4) {
     product: product === "float" || product === "popup" || product === "bind" ? product : "bind",
     language: language || "zho",
     riskType,
+    userInfo,
     hideSuccess: getQueryValue(route.query.hideSuccess) === "true",
   });
 } else {
